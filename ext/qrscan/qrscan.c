@@ -46,7 +46,7 @@ unsigned char* load_image(const char* image_path, int *width, int *height) {
 }
 
 const char* scan_image(unsigned char* image, int width, int height) {
-  const char *decoded_string = "";
+  const char *decoded_string = NULL;
   // Initialize zbar image scanner
   zbar_image_scanner_t *scanner = zbar_image_scanner_create();
   // Enable all barcode types
@@ -79,11 +79,13 @@ VALUE scan(VALUE self, VALUE image_path) {
   const char *image_path_ptr = StringValuePtr(image_path);
   int width, height;
   unsigned char *img = load_image(image_path_ptr, &width, &height);
-  if (!img) {
-    rb_raise(qrscan_error, "Error loading image");
-  }
+  if (!img) rb_raise(qrscan_error, "Error loading image");
+
   const char* s = scan_image(img, width, height);
-  return rb_str_new2(s);
+  if (s)
+    return rb_str_new2(s);
+  else
+    return Qnil;
 }
 
 void Init_qrscan() {

@@ -6,3 +6,9 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+ext/qrscan/Makefile
+ext/qrscan/mkmf.log
+ext/qrscan/qrscan.bundle
+ext/qrscan/qrscan.bundle.dSYM/
+ext/qrscan/qrscan.o

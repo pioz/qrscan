@@ -45,7 +45,7 @@ unsigned char* load_image(const char* image_path, int *width, int *height) {
   return gray;
 }
 
-const char* scan(unsigned char* image, int width, int height) {
+const char* scan_image(unsigned char* image, int width, int height) {
   const char *decoded_string = "";
   // Initialize zbar image scanner
   zbar_image_scanner_t *scanner = zbar_image_scanner_create();
@@ -82,7 +82,7 @@ VALUE scan(VALUE self, VALUE image_path) {
   if (!img) {
     rb_raise(qrscan_error, "Error loading image");
   }
-  const char* s = scan(img, width, height);
+  const char* s = scan_image(img, width, height);
   return rb_str_new2(s);
 }
 

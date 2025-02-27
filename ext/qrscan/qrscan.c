@@ -1,6 +1,5 @@
 #include "ruby.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <zbar.h>
@@ -10,20 +9,20 @@
 
 // Cleanup handler for the image data
 void free_image(zbar_image_t *img) {
-  const void *data = zbar_image_get_data(img);
-  if (data) free((void *)data);
+  const void* data = zbar_image_get_data(img);
+  if (data) free((void*)data);
 }
 
-unsigned char* load_image(const char* image_path, int *width, int *height) {
+unsigned char* load_image(const char* image_path, int* width, int* height) {
   int channels;
   // Load image using stb_image
-  unsigned char *img = stbi_load(image_path, width, height, &channels, 0);
+  unsigned char* img = stbi_load(image_path, width, height, &channels, 0);
   if (!img) {
     return NULL;
   }
   int pixels = (*width) * (*height);
   // Convert image to grayscale
-  unsigned char *gray = malloc(pixels);
+  unsigned char* gray = malloc(pixels);
   if (!gray) {
     stbi_image_free(img);
     return NULL;
@@ -46,7 +45,7 @@ unsigned char* load_image(const char* image_path, int *width, int *height) {
 }
 
 const char* scan_image(unsigned char* image, int width, int height) {
-  const char *decoded_string = NULL;
+  const char* decoded_string = NULL;
   // Initialize zbar image scanner
   zbar_image_scanner_t *scanner = zbar_image_scanner_create();
   // Enable all barcode types
@@ -76,12 +75,12 @@ const char* scan_image(unsigned char* image, int width, int height) {
 VALUE qrscan_error;
 
 VALUE scan(VALUE self, VALUE image_path) {
-  const char *image_path_ptr = StringValuePtr(image_path);
+  const char* image_path_ptr = StringValuePtr(image_path);
   int width, height;
-  unsigned char *img = load_image(image_path_ptr, &width, &height);
-  if (!img) rb_raise(qrscan_error, "Error loading image");
+  unsigned char* image = load_image(image_path_ptr, &width, &height);
+  if (!image) rb_raise(qrscan_error, "Error loading image");
 
-  const char* s = scan_image(img, width, height);
+  const char* s = scan_image(image, width, height);
   if (s)
     return rb_str_new2(s);
   else

@@ -9,6 +9,6 @@ dir_config("qrscan", "C:/Program Files (x86)/ZBar/include", "C:/Program Files (x
 
 # Verifica la presenza dell'header e della libreria (opzionale)
 have_header("zbar.h") or abort "zbar.h not found"
-# have_library("zbar") or abort "libzbar not found"
+have_library("zbar") or abort "libzbar not found"
 
 create_makefile("qrscan")
